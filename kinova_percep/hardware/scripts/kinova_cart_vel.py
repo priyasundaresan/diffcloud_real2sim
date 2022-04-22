@@ -1,9 +1,10 @@
 """
 A simple script for making Kinova Gen3 robot follow a given trajectory.
 
-python -m deform_realsim.hardware.scripts.kinova_cart_vel
+python -m kinova_percep.hardware.scripts.kinova_cart_vel lift ~/code/tmp
+python -m kinova_percep.hardware.scripts.kinova_cart_vel fold ~/code/tmp
 
-@contactrika
+@priyasundaresan
 
 """
 from datetime import datetime

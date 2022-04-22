@@ -13,9 +13,6 @@ def overlay(mask, img):
 
 if __name__ == '__main__':
     BLENDER = '/afs/cs.stanford.edu/u/priyasun/Downloads/blender-2.82-linux64/blender'
-
-    #folders = [os.path.join('fold_rollouts3', f, 'output') for f in os.listdir('fold_rollouts3')]
-    #folders = [os.path.join('lift_rollouts', f, 'output') for f in os.listdir('lift_rollouts')]
     folders = [os.path.join('test_rollouts', f, 'output') for f in os.listdir('test_rollouts')]
     '''
     fling

@@ -154,6 +154,8 @@ def main(mask_dirs, depth_dirs, translations, output_dir, n_points, transform_ya
 
         plot_pointclouds(pcls_plotting, title='%s/%03d.jpg'%(output_dir, i))
         np.save('%s/%03d.npy'%(output_dir, i), pcl_combined)
+        np.save('%s/%03d_overhead.npy'%(output_dir, i), pcls_plotting[0])
+        np.save('%s/%03d_side.npy'%(output_dir, i), pcls_plotting[1])
 
 if __name__ == '__main__':
     # HARDCODED OFFSETS TO MERGE POINTCLOUDS (DUE TO SENSOR/CALIBRATION ERROR)
