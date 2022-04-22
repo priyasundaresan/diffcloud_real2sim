@@ -144,18 +144,6 @@ def make_traj(waypts, duration_sec=5.0, freq=10, mode='quadratic', plot=False):
     assert(traj.shape[0] == vel.shape[0])
     return traj, vel
 
-
-#def make_stretch_waypoints(center, traj_time, control_freq):
-#    waypts = np.array([ \
-#            center, \
-#            center + np.array([-0.15, -0.07, 0.0]), \
-#            center + np.array([-0.23, -0.11, -0.05]), \
-#            center + np.array([-0.21, -0.15, -0.15]), \
-#            ])
-#    traj, _ = make_traj(waypts, duration_sec=traj_time, freq=control_freq)
-#    print(traj)
-#    return traj
-
 def make_stretch_waypoints(approach_point, traj_time, control_freq):
     center = approach_point + np.array([-0.08,0,-0.155])
     waypts = np.array([ \
@@ -198,15 +186,6 @@ def make_calib_sweep_traj(center, width, n, traj_time, control_freq, platform_he
 def make_fling_waypoints(traj_time, control_freq):
     #center = np.array([0.7, 0, 0.2])
     center = np.array([0.7, 0, 0.175])
-    #waypts = np.array([ \
-    #        center, \
-    #        center + np.array([0.2, 0, 0.2]), \
-    #        center + np.array([0.1, 0, 0.05]), \
-    #        center + np.array([0.1, 0, 0]), \
-    #        center + np.array([0.05, 0, -0.05]), \
-    #        center + np.array([-0.05, 0, -0.05]), \
-    #        center + np.array([-0.10, 0, -0.05]),
-    #        ])
     waypts = np.array([ \
             center, \
             center + np.array([0.2, 0, 0.2]), \
@@ -219,17 +198,22 @@ def make_fling_waypoints(traj_time, control_freq):
     print(traj)
     return traj
 
-def make_arcsim_fling_waypoints(traj_time, control_freq):
+def make_arcsim_lift_waypoints(traj_time, control_freq):
     path_to_waypoints = os.path.join(os.path.dirname(__file__), 'trajs', 'lift_traj.npy')
-    #path_to_waypoints = os.path.join(os.path.dirname(__file__), 'trajs', 'fold_traj.npy')
+    waypts = np.load(path_to_waypoints)
+    traj, _ = make_traj(waypts, duration_sec=traj_time, freq=control_freq, mode='cubic')
+    print(traj)
+    return traj
+
+def make_arcsim_fold_waypoints(traj_time, control_freq):
+    path_to_waypoints = os.path.join(os.path.dirname(__file__), 'trajs', 'fold_traj.npy')
     waypts = np.load(path_to_waypoints)
     traj, _ = make_traj(waypts, duration_sec=traj_time, freq=control_freq, mode='cubic')
     print(traj)
     return traj
 
 def make_arcsim_stretch_waypoints(traj_time, control_freq):
-    #path_to_waypoints = os.path.join(os.path.dirname(__file__), 'trajs', 'stretch_real_traj.npy')
-    path_to_waypoints = os.path.join(os.path.dirname(__file__), 'trajs', 'new_stretch.npy')
+    path_to_waypoints = os.path.join(os.path.dirname(__file__), 'trajs', 'stretch_traj.npy')
     waypts = np.load(path_to_waypoints)
     traj, _ = make_traj(waypts, duration_sec=traj_time, freq=control_freq, mode='cubic')
     print(traj)
@@ -248,7 +232,6 @@ def translate_waypoints(waypoints, axis, offset):
 
 def main():
     plot_trajectory(make_circular_waypoints(n_steps=50))
-
 
 if __name__ == "__main__":
     main()

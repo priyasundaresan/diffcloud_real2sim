@@ -20,7 +20,7 @@ from kortex_api.autogen.client_stubs.BaseCyclicClientRpc import BaseCyclicClient
 
 from ..utils.manual_trajs import (
     plot_trajectory, make_fig8_waypoints, make_circular_waypoints,
-    make_fling_waypoints, make_arcsim_fling_waypoints, make_stretch_waypoints, make_arcsim_stretch_waypoints, make_wiping_waypoints)
+    make_arcsim_lift_waypoints, make_arcsim_fold_waypoints, make_arcsim_stretch_waypoints)
 from ..utils.kinova_utils import (
     DeviceConnection, command_velocity, check_hard_boundary, get_position,
     go_home, go_pose)
@@ -74,68 +74,33 @@ def main():
     if task_name == 'fig8':  # execute figure 8 demo
         tgt_ori_deg = np.array([90, 0, 90])
         tgt_traj = make_fig8_waypoints(n_steps)
-    elif task_name == 'wiping':
-        path = os.path.join(os.path.dirname(__file__), 'data.npy')
-        print('path', path)
-        traj_data = np.load(path)
-        tgt_traj = traj_data
-        #for key in traj_data:
-        #    print(key)
-        #tgt_traj = traj_data['robot_pos']
-        #tgt_traj = traj_data['data']
-        tgt_traj = make_wiping_waypoints(tgt_traj)
-        print('tgt_traj', tgt_traj.shape)
-        print(tgt_traj)
-        tgt_ori_deg = np.array([105.99, 4.90, 87.47])
-    elif task_name == 'winding':
-        tgt_ori_deg = np.array([150, 0, 90])
-        tgt_traj = make_circular_waypoints(n_steps)
-        print(tgt_traj)
-    elif task_name == 'fling':
-        ## this works
-        #go_home_first = False
-        #tgt_ori_deg = np.array([150, 0, 90])
-        #traj_time = 2.5
-        #n_steps = traj_time * CONTROL_FREQUENCY
-        #tgt_traj = make_arcsim_fling_waypoints(traj_time, CONTROL_FREQUENCY)
-
-        go_home_first = False
+    elif task_name == 'lift':
         tgt_ori_deg = np.array([150, 0, 90])
         traj_time = 2.5
         n_steps = traj_time * CONTROL_FREQUENCY
-        tgt_traj = make_arcsim_fling_waypoints(traj_time, CONTROL_FREQUENCY)
-
-
-        #tgt_ori_deg = np.array([90, 90, 90])
-        #traj_time = 2.5
-        #n_steps = traj_time * CONTROL_FREQUENCY
-        #tgt_traj = make_arcsim_fling_waypoints(traj_time, CONTROL_FREQUENCY)
-
-    elif task_name == 'loop':
-        # NORMAL
-        #center = np.array([0.8, 0.1, 0.275])
-        #tgt_ori_deg = np.array([150, -30, 90])
-        #traj_time = 4
-        #force_thresh = 12.0
-
-        # DEMO
-        #center = np.array([0.87, 0.1, 0.43])
-        #tgt_ori_deg = np.array([120, -30, 90])
-        #traj_time = 6
-        #force_thresh = 50.0
-
-        # ARCSIM
+        tgt_traj = make_arcsim_lift_waypoints(traj_time, CONTROL_FREQUENCY)
+    elif task_name == 'fold':
+        tgt_ori_deg = np.array([150, 0, 90])
+        traj_time = 2.5
+        n_steps = traj_time * CONTROL_FREQUENCY
+        tgt_traj = make_arcsim_fold_waypoints(traj_time, CONTROL_FREQUENCY)
+    #elif task_name == 'fling':
+    #    go_home_first = False
+    #    tgt_ori_deg = np.array([150, 0, 90])
+    #    traj_time = 2.5
+    #    n_steps = traj_time * CONTROL_FREQUENCY
+    #    tgt_traj = make_arcsim_fling_waypoints(traj_time, CONTROL_FREQUENCY)
+    elif task_name == 'stretch':
         tgt_ori_deg = np.array([120, -30, 90])
         traj_time = 3
         force_thresh = 50.0
         tgt_traj = make_arcsim_stretch_waypoints(traj_time, CONTROL_FREQUENCY)
-
-        #n_steps = traj_time * CONTROL_FREQUENCY
-        #tgt_traj = make_stretch_waypoints(center, traj_time, CONTROL_FREQUENCY)
     else:
         print('Unknown task', task_name)
         exit(1)
+
     print('Task', task_name, 'tgt_traj', tgt_traj.shape, 'logdir', logdir)
+
     task_info = TASK_INFO.get(task_name, None)
     if task_info is None:
         #kincam = KinovaWithCamera(logdir, cam_rec_interval=1)
@@ -145,11 +110,11 @@ def main():
         #    logdir, cam_rec_interval=1,
         #    edge_size_px=task_info['edge_size_px'],
         #    max_unmasked_z=task_info['max_unmasked_z'])
-
         kincam = KinovaMulticamera(
             logdir, cam_rec_interval=1,
             edge_size_px=task_info['edge_size_px'],
             max_unmasked_z=task_info['max_unmasked_z'])
+
     with DeviceConnection.createTcpConnection() as router:
         with DeviceConnection.createUdpConnection() as router_real_time:
             base = BaseClient(router)
@@ -169,7 +134,6 @@ def main():
             print('Plotting results')
             plot_trajectory(tgt_traj, real_traj)
             return True
-
 
 if __name__ == "__main__":
     exit(main())
