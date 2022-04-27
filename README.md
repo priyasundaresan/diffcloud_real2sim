@@ -33,7 +33,7 @@ cd kinova_perception/post_proc/docker
 ```
 <a name="workflow"></a>
 ## Example workflow: recording trajectories
-* Add the following lines to your `~/.bashrc.user`, and then run `source ~/.bashrc.user`. Whenever interfacing with the robots/cameras, you'll want to always `source` ROS, and then the other two commands are helpful shortcuts for launching camera ROS nodes and using `blender` on the command line.
+* Add the following lines to your `~/.bashrc.user`, and then run `source ~/.bashrc.user`. Whenever interfacing with the robots/cameras, you'll want to always `source` ROS, and then the other three commands are helpful shortcuts for launching camera ROS nodes and using `blender` on the command line.
 ```
 source /opt/ros/noetic/setup.bash
 alias start-topcam='roslaunch realsense2_camera rs_camera.launch camera:=cam_1 serial_no:=919122071583 align_depth:=true initial_reset:=true'
@@ -42,7 +42,7 @@ alias blender='/afs/cs.stanford.edu/u/priyasun/Downloads/blender-2.82-linux64/bl
 ```
 * In one terminal, run `start-topcam` to launch the ROS node for the overhead RealSense camera.
 * In another terminal, run `start-sidecam` to launch the ROS node for the side-mounted RealSense camera.
-* NOTE: if you swap out either of the cameras, be sure to update the `serial_no` for these commands in the `~/.bashrc.user`
+* NOTE: if you swap out either of the cameras, be sure to update the `serial_no` for these commands in the `~/.bashrc.user`. 
 
 * First, run the script to execute a robot trajectory and save RGB and depth images:
 ```
@@ -96,3 +96,16 @@ liftXXXXX
 ```
 #
 * The above script creates a directory at `/host/output` which contains the merged, masked point clouds stored as `.npy` files, and renderings of the resulting point clouds.
+
+<a name="install"></a>
+## Debugging
+* RealSense Cameras
+ * When launching `start-topcam` or `start-sidecam`, you may see `WARNINGS` in yellow. These can be safely ignored, but if you see `ERRORS` in red, then there is an issue. 
+ * As a first resort, try hardware resets (unplugging and plugging back in the RealSense, plugging in the RealSense to a different USB port)
+ * Also, double check that the `serial_no` you're using in `start-sidecam` or `start-topcam` is correct. Verify this in `realsense-viewer` if you are unsure.
+ * In general, `realsense-viewer` is a useful commandline tool to launch RealSense visualizations in a GUI. Note, you must kill all camera-related ros nodes before launching `realsense-viewer`, or kill `realsense-viewer` if you are starting the ros nodes (both cannot be running at the same time)
+* Kinovas
+ * Powering on: Hold down the top button on the back of the Kinova for 3-5 seconds. Once you see a green light turn on, you can release the button. Give it a few more seconds (~5-10), and the light should blink yellow. Then, the Kinova should open --> close --> open its gripper at which point it is on
+ * Powering off: Use the XBOX controller to home the robot by holding down `B`. Then, use the right joystick to lower the robot close to the table. Hold down the top button on the back of the Kinova until it loses power. 
+ * Note: the Kinova has no brakes, so using E-STOP during execution or not bringing the robot close to the table via XBOX controller before powering off will cause the robot to fall when power is cut. 
+ * To stop robot execution while a script is running, use `Ctrl + \`
