@@ -19,8 +19,10 @@ python3 -m pip install ~/Downloads/kortex_api-2.3.0.post34-py3-none-any.whl
 pip install open3d
 ```
 
-### Install Blender 2.82 from https://download.blender.org/release/Blender2.82/
-This is used for using the URDF of the Kinova robot to render robot masks from the scene captured
+### Install Blender 2.82
+Visit: https://download.blender.org/release/Blender2.82/ 
+Download the file called `blender-2.82-linux64.tar.xz`
+This will be used for render robot masks from a given trajectory, using knowledge of the Kinova URDF. Thus, in post-processing, the robot can be artifically removed from scenes captured during manipulation.
 
 ### Set up Docker container (to install some libraries for post-processing point clouds)
 The library https://github.com/strawlab/python-pcl contains useful tools for processing point clouds captured with the RealSense cameras, but is difficult to install with `pip`, so there is a provided `docker` image for using it. 
@@ -30,7 +32,16 @@ cd kinova_perception/post_proc/docker
 # Test that the container built properly using ./docker_run.py (NOTE: use Ctrl+D to exit the container)
 ```
 <a name="workflow"></a>
-## Example workflow
+## Example workflow: recording trajectories
+* Add the following two lines to your `~/.bashrc.user`
+```
+alias start-topcam='roslaunch realsense2_camera rs_camera.launch camera:=cam_1 serial_no:=919122071583 align_depth:=true initial_reset:=true'
+alias start-sidecam='roslaunch realsense2_camera rs_camera.launch camera:=cam_2 serial_no:=838212072814 align_depth:=true initial_reset:=true'
+```
+* In one terminal, run `start-topcam` to launch the ROS node for the overhead RealSense camera.
+* In another terminal, run `start-sidecam` to launch the ROS node for the side-mounted RealSense camera.
+* NOTE: if you swap out either of the cameras, be sure to update the `serial_no` for these commands in the `~/.bashrc.user`
+
 * First, run the script to execute a robot trajectory and save RGB and depth images:
 ```
 python -m kinova_percep.hardware.scripts.kinova_cart_vel lift ~/code/tmp
@@ -82,11 +93,8 @@ liftXXXXX
         └── video
 ```
 # Using docker container
+```
 (base) root@b89b9fef4660:/host# python generate_merged_masked_pcls.py -o test_rollouts/liftXXXXX/output/overhead -s test_rollouts/liftXXXXX/output/side
-# This will produce a folder output
-
+```
 #
-alias start-topcam='roslaunch realsense2_camera rs_camera.launch camera:=cam_1 serial_no:=919122071583 align_depth:=true initial_reset:=true'
-alias start-sidecam='roslaunch realsense2_camera rs_camera.launch camera:=cam_2 serial_no:=838212072814 align_depth:=true initial_reset:=true'
-
 
