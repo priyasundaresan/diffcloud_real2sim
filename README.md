@@ -99,12 +99,12 @@ liftXXXXX
 
 <a name="install"></a>
 ## Debugging
-* RealSense Cameras
+### RealSense Cameras
  * When launching `start-topcam` or `start-sidecam`, you may see `WARNINGS` in yellow. These can be safely ignored, but if you see `ERRORS` in red, then there is an issue. 
  * As a first resort, try hardware resets (unplugging and plugging back in the RealSense, plugging in the RealSense to a different USB port)
  * Also, double check that the `serial_no` you're using in `start-sidecam` or `start-topcam` is correct. Verify this in `realsense-viewer` if you are unsure.
  * In general, `realsense-viewer` is a useful commandline tool to launch RealSense visualizations in a GUI. Note, you must kill all camera-related ros nodes before launching `realsense-viewer`, or kill `realsense-viewer` if you are starting the ros nodes (both cannot be running at the same time)
-* Kinovas
+### Kinovas
  * Powering on: Hold down the top button on the back of the Kinova for 3-5 seconds. Once you see a green light turn on, you can release the button. Give it a few more seconds (~5-10), and the light should blink yellow. Then, the Kinova should open --> close --> open its gripper at which point it is on
  * Powering off: Use the XBOX controller to home the robot by holding down `B`. Then, use the right joystick to lower the robot close to the table. Hold down the top button on the back of the Kinova until it loses power. 
  * Note: the Kinova has no brakes, so using E-STOP during execution or not bringing the robot close to the table via XBOX controller before powering off will cause the robot to fall when power is cut. 
