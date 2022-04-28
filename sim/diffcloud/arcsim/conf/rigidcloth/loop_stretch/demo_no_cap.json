@@ -1,0 +1,43 @@
+{
+    "frame_time": 0.04,
+    "frame_steps": 1,
+    "end_time": 1.21,
+    "cloths": [
+    {
+        "mesh": "meshes/rigidcloth/loop_stretch/loop_angled_more2_smaller.obj",
+        "materials": [{"data": "materials/camel-ponte-roma.json",
+                       "thicken": 2}],
+        "remeshing": {
+            "refine_angle": 0.3,
+            "refine_compression": 0.005,
+            "refine_velocity": 0.5,
+            "size": [10e-3, 100e-3],
+            "aspect_min": 0.2
+        }
+    }
+    ],
+    "motions": [[
+        {"time": 0},
+        {"time": 0.45, "transform": {"translate": [0.4,-1.8,2.3], "scale": 0}},
+        {"time": 0.55, "transform": {"translate": [0.63,-2.45,2.25], "scale": 0}},
+        {"time": 1.2, "transform": {"translate": [0.7,-2.42,0.1], "scale": 0}}
+    ]],
+    "handles": [ 
+        {"nodes": [36,37,38,39,48,51,49,50,57,58], "end_time": 1.2},
+        {"nodes": [36,37,38,39,48,51,49,50,57,58], "motion": 0, "start_time": 0, "end_time": 1.2}
+    ],
+    "obstacles": [
+    {
+        "mesh": "meshes/rigidcloth/loop_stretch/poles.obj",
+        "transform":{"scale":1,"translate":[0,0,0],"rotate":[0,1,0,0]},
+        "movable": 0
+    },
+    {
+        "mesh": "meshes/rigidcloth/loop_stretch/plane.obj",
+        "transform":{"scale":1,"translate":[0,0,0],"rotate":[0,1,0,0]},
+        "movable": 0
+    }],
+    "disable":["remeshing"],
+    "gravity":[0, 0, -9.8],
+    "magic": {"repulsion_thickness": 5e-3, "collision_stiffness": 1e6}
+}

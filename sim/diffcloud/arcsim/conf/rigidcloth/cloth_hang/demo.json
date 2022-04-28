@@ -1,0 +1,37 @@
+{
+    "frame_time": 0.04,
+    "frame_steps": 1,
+    "end_time": 2,
+    "cloths": [
+    {
+        "mesh": "meshes/rigidcloth/cloth_hang/jacket.obj",
+        "materials": [{"data": "materials/gray-interlock.json",
+                       "thicken": 2}],
+        "remeshing": {
+            "refine_angle": 0.3,
+            "refine_compression": 0.005,
+            "refine_velocity": 0.5,
+            "size": [10e-3, 100e-3],
+            "aspect_min": 0.2
+        }
+    }
+    ],
+    "motions": [[
+        {"time": 0},
+        {"time": 0.75, "transform": {"translate": [0,-0.15,1.05], "scale": 0}},
+        {"time": 1.50, "transform": {"translate": [0,0.85,1.1], "scale": 0}}
+    ]],
+    "handles": [ 
+        {"nodes": [0], "end_time": 1.9},
+        {"nodes": [0], "motion": 0, "start_time": 0.1, "end_time": 1.9}
+    ],
+    "obstacles": [
+    {
+        "mesh": "meshes/rigidcloth/cloth_hang/hook.obj",
+        "transform":{"scale":1,"translate":[0,0,0],"rotate":[0,1,0,0]},
+        "movable": 0
+    }],
+    "disable":["remeshing", "proximity"],
+    "gravity":[0, 0, -2.0],
+    "magic": {"repulsion_thickness": 5e-3, "collision_stiffness": 1e6}
+}
