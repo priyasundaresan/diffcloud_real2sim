@@ -99,7 +99,7 @@ liftXXXXX
 #
 * The above script creates a directory at `/host/output` which contains the merged, masked point clouds stored as `.npy` files, and renderings of the resulting point clouds.
 * NOTE: The above scripts process point clouds in the robot frame of reference. To use the above point clouds for DiffCloud real-to-sim optimizations, there is an additional transformation required to map the real frame of reference to the sim frame of reference. (i.e., real point clouds are recorded in terms of `mm`, and the units in simulation are different -- we should ensure that everything is in the same units/global orientation). 
-  * To account for this, replace the above command with the following, noting that `yaml_configs/real2sim.yaml` contains the transformation that will map the recorded real point cloud in the sim frame of reference instead.
+  * To account for this, replace the above command with the following, noting that `yaml_configs/lift_real2sim.yaml` contains the transformation that will map the recorded real point cloud in the sim frame of reference instead.
 ```
  (base) root@b89b9fef4660:/host# python generate_merged_masked_pcls.py -o test_rollouts/liftXXXXX/output/overhead -s test_rollouts/liftXXXXX/output/side -t yaml_configs/lift_real2sim.yaml
 ```
@@ -113,7 +113,7 @@ python plot_pcls.py -r output -s ../../sim/diffcloud/pysim/demo_pcl_frames -t ya
 ```
   * This will produce a folder `pcls` showing the simulated point clouds in red, and the real point clouds overlaid in blue. You can use this to retroactively tweak the scaling/translation/rotation transforms of `scenario_real2sim.yaml` until the real/sim overlaid point clouds are approximately in the same scale/global pose. 
   * Then, you can record the simulation trajectory in the sim frame of reference, use `scenario_real2sim.yaml` to inverse map the simulation waypoints to real waypoints, and execute these trajectories in real when you do data collection.
-  * More on how to record simulation trajectories, render simulation point clouds [here] (https://github.com/priyasundaresan/diffcloud_real2sim/tree/master/sim/diffcloud/README.md)
+  * More on how to record simulation trajectories, render simulation point clouds [here](https://github.com/priyasundaresan/diffcloud_real2sim/tree/master/sim/diffcloud/README.md)
 
 <a name="install"></a>
 ## Debugging
