@@ -10,6 +10,10 @@
 ```
 git clone https://github.com/priyasundaresan/diffcloud_real2sim
 ```
+* Install `docker` if not already installed (https://docs.docker.com/engine/install/). This repository is tested with 
+```
+Docker version 20.10.12, build e91ed57
+```
 * Install `arcsim` and Python bindings. There is a provided `docker` container to avoid any dependency headaches.
 ```
 cd diffcloud_real2sim/sim/diffcloud/pysim
@@ -90,3 +94,38 @@ Type "help", "copyright", "credits" or "license" for more information.
 eog hang_exps_diffcloud/0/fixed* # visualize the optimized result for a single trajectory
 eog hang_exps_diffcloud/*/fixed* # visualize the optimized result across trajectories
 ```
+* NOTE: Currently, there is a problem with running the above scripts on A400 GPUs. You can still run the optimizations setting device from `cuda:0` --> `cpu` in the scripts. 
+
+<a name="scenarios"></a>
+## Creating New Simulation Scenarios
+* Launch `docker` container in non-headless mode: `./docker_run.py` from `diffcloud_real2sim/sim/diffcloud/docker`
+* `cd /path/to/diffcloud_real2sim/sim/diffcloud/pysim`
+* There is a script called `test_demos.py` showing how to run a provided scenario, tweak simulation deformable parameters manually, and print out simulation trajectories.
+```
+(diffsim_torch3d) root@44823e91a9b2:/host/pysim# python test_demos.py
+```
+* Run the following to launch and interactive visualization showing the scenario
+```
+(diffsim_torch3d) root@44823e91a9b2:/host/pysim# python msim.py
+```
+* To add your own simulation scenarios, it is a matter of creating the appropriate configuration file in `arcsim/conf` referencing your meshes in `arcsim/meshes`, and adding code like the following to `test_demos.py` + visualizing with `msim.py`:
+```
+if not os.path.exists('default_out'):
+    os.mkdir('default_out')
+sim = arcsim.get_sim()
+sim_trajectory = []
+arcsim.init_physics(os.path.join('conf/rigidcloth/PATH_TO_YOUR_JSON'),'default_out/out0', False)
+for step in range(YOUR_N_STEPS):
+    sim_trajectory.append(sim.cloths[0].mesh.nodes[YOUR_PINNED_VERTEX].x.detach().cpu().numpy()) 
+    print(step, np.round(sim_trajectory[-1], 4))
+    arcsim.sim_step()
+print('saving')
+np.save('sim_traj.npy', np.array(sim_trajectory))
+```
+* There is also a script `render_pcl_demo.py` to convert the result of meshes saved in `default_out` produced by `msim.py` to point clouds in a folder called `demo_pcl_frames`. An example workflow:
+```
+(diffsim_torch3d) root@44823e91a9b2:/host/pysim# python test_demos.py
+(diffsim_torch3d) root@44823e91a9b2:/host/pysim# python msim.py
+(diffsim_torch3d) root@44823e91a9b2:/host/pysim# python render_pcl_demo.py # saves to output folder demo_pcl_frames
+```
+* The folder `demo_pcl_frames` can be used to overlay against real point clouds recorded, see [the bottom of this section](https://github.com/priyasundaresan/diffcloud_real2sim/tree/master/real#example-of-data-collection-recording-trajectories-and-paired-point-clouds)
