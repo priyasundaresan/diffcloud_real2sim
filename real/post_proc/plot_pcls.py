@@ -1,5 +1,5 @@
 '''
-python plot_pcls.py -r output -s fling_pcl_frames_shorter -t yaml_configs/fling_real2sim.yaml
+python plot_pcls.py -r output -s ../../sim/diffcloud/pysim/demo_pcl_frames -t yaml_configs/lift_real2sim.yaml
 '''
 
 import matplotlib.pyplot as plt
@@ -79,6 +79,7 @@ if __name__ == '__main__':
         os.mkdir(output_dir)
         
     if args.transform_yaml_config is not None:
+        print('here')
         with open(args.transform_yaml_config) as stream:
             config = yaml.safe_load(stream)
         rot = R.from_euler('z', config['z_rotation'], degrees=True).as_matrix()
@@ -89,16 +90,15 @@ if __name__ == '__main__':
 
     episode_length = len(os.listdir(real_dir))
     # loop
-    delay = 0
+    delay = 0 # frame delay, currently none
 
     for i in range(delay,episode_length):
-        #pcl1 = np.load(os.path.join(real_dir, '%03d.npy'%i))
         pcl1 = np.load(os.path.join(real_dir, '%03d.npy'%(i-delay)))
         if args.transform_yaml_config is not None:
             pcl1 = real2sim_transf(pcl1, trans, scale, rot, compensation_factor=compensation_factor)
 
         pcl2 = np.load(os.path.join(sim_dir, '%03d.npy'%(i))).squeeze()
 
-        plot_pointclouds([pcl1, pcl2], title=os.path.join(output_dir, 'rot_%03d.jpg'%i), angle=(i*185/episode_length))
+        plot_pointclouds([pcl1, pcl2], title=os.path.join(output_dir, 'rot_%03d.jpg'%i), angle=(i*360/episode_length))
         plot_pointclouds([pcl1, pcl2], title=os.path.join(output_dir, 'fixed_%03d.jpg'%i), angle=0)
         print(i)

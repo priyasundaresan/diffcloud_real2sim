@@ -1,7 +1,7 @@
 '''
 cd docker
 ./docker_run.py
-python generate_merged_masked_pcls.py -o fling_rollouts/fling_tan2/output/overhead -s fling_rollouts/fling_paper2/output/side -n 2500 -t yaml_configs/fling_real2sim.yaml
+python generate_merged_masked_pcls.py -o test_rollouts/lift_220428_175916/output/overhead -s test_rollouts/lift_220428_175916/output/side -n 2500 -t yaml_configs/lift_real2sim.yaml
 # Ctrl + D
 '''
 
