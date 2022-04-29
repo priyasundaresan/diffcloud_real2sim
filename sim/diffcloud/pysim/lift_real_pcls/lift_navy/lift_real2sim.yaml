@@ -1,0 +1,5 @@
+z_rotation: 90
+translation: [0.67, 0.15, 0.0]
+scale: 0.35
+compensation_factor: [-0.02, 0.05, -0.02]
+
