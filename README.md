@@ -1,7 +1,9 @@
 # DiffCloud: Deformable Real-to-sim from Point Clouds
-#### "DiffCloud: Real-to-sim from Point Clouds with Differentiable Simulation and Rendering of Deformable Objects"
-#### Priya Sundaresan, Rika Antonova, Jeannette Bohg
-#### [pre-print](https://arxiv.org/abs/2204.03139) [website](tinyurl.com/diffcloud)
+
+*Priya Sundaresan, Rika Antonova, Jeannette Bohg*
+
+[[Project]](tinyurl.com/diffcloud)
+[[arXiv]](https://arxiv.org/abs/2204.03139)
 
 ## Description
 * This repo provides a framework for differentiable real-to-sim parameter estimation of deformable objects from real robot manipulation.
@@ -10,4 +12,3 @@
   * `sim`: scripts for performing real-to-sim optimizations with differentiable and nondifferentiable methods.
 * Please see the details of our DiffCloud implementation [here](https://github.com/priyasundaresan/diffcloud_real2sim/tree/master/sim/diffcloud)
 * Note, this is heavily built on [DiffSim] (https://github.com/YilingQiao/diffsim)
-
