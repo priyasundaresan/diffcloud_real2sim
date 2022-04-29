@@ -38,7 +38,9 @@ def add_camera(view_mode):
     elif view_mode == 'overhead':
         #bpy.ops.object.camera_add(location=(1.125, 0.145, 1.05), rotation=(0.45, 0.1, 1.6)) # top, gates, fold
         #bpy.ops.object.camera_add(location=(1.21, 0.035, 1.05), rotation=(0.5, -0.05, 1.60)) # top, gates, fold
-        bpy.ops.object.camera_add(location=(1.21, 0.035, 1.05), rotation=(0.5, -0.05, 1.60)) # top, gates, fold
+
+        #bpy.ops.object.camera_add(location=(1.21, 0.035, 1.05), rotation=(0.5, -0.05, 1.60)) # top, gates, fold
+        bpy.ops.object.camera_add(location=(1.31, 0.02, 1.05), rotation=(0.55, -0.05, 1.60)) # top, gates, fold
     elif view_mode == 'angled_overhead':
         bpy.ops.object.camera_add(location=(1.17, -0.3, 0.9), rotation=(0.6, 0, 0.9)) # top
     bpy.context.scene.camera = bpy.context.object

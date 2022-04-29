@@ -160,7 +160,8 @@ def main(mask_dirs, depth_dirs, translations, output_dir, n_points, transform_ya
 if __name__ == '__main__':
     # HARDCODED OFFSETS TO MERGE POINTCLOUDS (DUE TO SENSOR/CALIBRATION ERROR)
     translation_overhead_rs = np.array([0,0,0]) # keep this zero, update the others
-    translation_side_rs = np.array([0.0,0.0,0.0]) # realsense, side
+    #translation_side_rs = np.array([0.0,0.0,0.0]) # realsense, side
+    translation_side_rs = np.array([0.0075,0.0175,0.0]) # realsense, side
     translation_phoxi = np.array([0.0,0.0,0.0]) # phoxi, side (from packard)
 
     parser = argparse.ArgumentParser()

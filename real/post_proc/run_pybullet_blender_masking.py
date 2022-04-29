@@ -3,8 +3,8 @@ import numpy as np
 import cv2
 
 def overlay(mask, img):
-    mask = cv2.dilate(mask,np.ones((3,4)),iterations = 7)
-    #mask = cv2.dilate(mask,np.ones((3,4)),iterations = 9)
+    #mask = cv2.dilate(mask,np.ones((3,4)),iterations = 7)
+    mask = cv2.dilate(mask,np.ones((3,4)),iterations = 9)
     mask = np.repeat(mask[:,:,np.newaxis], 3, axis=2)
     overlay = cv2.addWeighted(img, 0.65, mask, 0.35, 0)
     return mask, overlay

@@ -98,6 +98,7 @@ class RealSense(Camera):
 
     def process_raw_rgb(self, img):
         img = self.crop_if_needed(img[:, 80:560])
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         return img
 
     def process_raw_depth(self, depth_image):

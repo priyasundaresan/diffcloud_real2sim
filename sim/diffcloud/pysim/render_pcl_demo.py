@@ -41,8 +41,6 @@ def plot_pointcloud(points, title=""):
     ax.set_ylim([-1,1])
     ax.set_zlim([0,1.3])
     ax.view_init(30, 40)
-    #ax.set_title(title)
-    #ax.view_init(100, -60)
     plt.show()
 
 def sim_objs_to_pcls(sim_dir='default_out'):
@@ -64,6 +62,6 @@ def sim_objs_to_pcls(sim_dir='default_out'):
         mesh = Meshes(verts=[torch.cat(all_verts)], faces=[torch.cat(all_faces)])
         sample_pcl = sample_points_from_meshes(mesh, num_points)
         np.save(os.path.join(out_dir, '%03d.npy'%i), sample_pcl)
-        #plot_pointcloud(sample_pcl)
+        plot_pointcloud(sample_pcl)
 if __name__ == '__main__':
     sim_objs_to_pcls()
