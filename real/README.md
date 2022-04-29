@@ -36,8 +36,8 @@ cd kinova_perception/post_proc/docker
 # Test that the container built properly using ./docker_run.py (NOTE: use Ctrl+D to exit the container)
 ```
 <a name="workflow"></a>
-## Example of data collection: recording trajectories and recording point clouds
-* Add the following lines to your `~/.bashrc.user`, and then run `source ~/.bashrc.user`. Whenever interfacing with the robots/cameras, you'll want to always `source` ROS, and then the other three commands are helpful shortcuts for launching camera ROS nodes and using `blender` on the command line.
+## Example of data collection: recording trajectories and paired point clouds
+* Add the following lines to your `~/.bashrc.user`, and then run `source ~/.bashrc.user`. Whenever interfacing with the robots/cameras, you'll want to always `source` ROS, and then the other two commands are helpful shortcuts for launching camera ROS nodes 
 ```
 source /opt/ros/noetic/setup.bash
 alias start-topcam='roslaunch realsense2_camera rs_camera.launch camera:=cam_1 serial_no:=919122071583 align_depth:=true initial_reset:=true'
@@ -98,6 +98,22 @@ liftXXXXX
 ```
 #
 * The above script creates a directory at `/host/output` which contains the merged, masked point clouds stored as `.npy` files, and renderings of the resulting point clouds.
+* NOTE: The above scripts process point clouds in the robot frame of reference. To use the above point clouds for DiffCloud real-to-sim optimizations, there is an additional transformation required to map the real frame of reference to the sim frame of reference. (i.e., real point clouds are recorded in terms of `mm`, and the units in simulation are different -- we should ensure that everything is in the same units/global orientation). 
+  * To account for this, replace the above command with the following, noting that `yaml_configs/real2sim.yaml` contains the transformation that will map the recorded real point cloud in the sim frame of reference instead.
+```
+ (base) root@b89b9fef4660:/host# python generate_merged_masked_pcls.py -o test_rollouts/liftXXXXX/output/overhead -s test_rollouts/liftXXXXX/output/side -t yaml_configs/lift_real2sim.yaml
+```
+  * Different sim DiffCloud scenarios could be created with meshes of different dimensions/scales and different global orientations/translations. Thus, to come up with a `scenario_real2sim.yaml` for a newly created sim scenario, I typically set up the simulation scenario and also set up an initial real trajectory (with manually specified waypoints) for the scenario and execute a trajectory with a test object. Then, you can run the following to record point clouds in the robot frame:
+```
+(base) root@b89b9fef4660:/host# python generate_merged_masked_pcls.py -o test_rollouts/scenarioXXXXX/output/overhead -s test_rollouts/scenarioXXXXX/output/side
+```
+  * Then, assuming you have a directory `demo_pcl_frames` of the point clouds in the simulation scenario, you may run the following. Note that `scenario_real2sim.yaml` can be an approximate guess for the real->sim transformation that you will tweak.
+```
+python plot_pcls.py -r output -s ../../sim/diffcloud/pysim/demo_pcl_frames -t yaml_configs/scenario_real2sim.yaml
+```
+  * This will produce a folder `pcls` showing the simulated point clouds in red, and the real point clouds overlaid in blue. You can use this to retroactively tweak the scaling/translation/rotation transforms of `scenario_real2sim.yaml` until the real/sim overlaid point clouds are approximately in the same scale/global pose. 
+  * Then, you can record the simulation trajectory in the sim frame of reference, use `scenario_real2sim.yaml` to inverse map the simulation waypoints to real waypoints, and execute these trajectories in real when you do data collection.
+  * More on how to record simulation trajectories, render simulation point clouds [here] (https://github.com/priyasundaresan/diffcloud_real2sim/tree/master/sim/diffcloud/README.md)
 
 <a name="install"></a>
 ## Debugging
