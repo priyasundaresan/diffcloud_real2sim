@@ -67,7 +67,6 @@ liftXXXXX
         └── video
 ```
 * You can then run various post-processing scripts to extract robot masks and produced final point clouds
-```
 * From inside the `conda` env, you can run the robot masking script (this masks the robot from RGB video frames, using knowledge of the robot geometry and 3D model). For instance:
 ```
 (kinova_env) priyasun@bohg-ws-13:/juno/u/priyasun/code/diffcloud_real2sim/real/post_proc$ python run_pybullet_blender_masking.py
