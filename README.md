@@ -2,7 +2,7 @@
 
 *Priya Sundaresan, Rika Antonova, Jeannette Bohg*
 
-[[Project]](tinyurl.com/diffcloud)
+[[Project]](http://tinyurl.com/diffcloud)
 [[arXiv]](https://arxiv.org/abs/2204.03139)
 
 ## Description
