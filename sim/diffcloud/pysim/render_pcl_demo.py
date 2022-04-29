@@ -1,3 +1,9 @@
+'''
+python test_demos.py
+python render_pcl_demo.py
+# Produces a directory called demo_pcl_frames containing npy files of point clouds sampled from mesh surface
+'''
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -51,6 +57,7 @@ def sim_objs_to_pcls(sim_dir='default_out'):
         all_verts = []
         all_faces = []
         vert_count = 0
+        # NOTE: comment one of these out if obstacles you don't want are rendering
         for j, f in enumerate(mesh_fnames[:1]):
         #for j, f in enumerate(mesh_fnames):
             verts, faces, aux = load_obj(os.path.join(sim_dir, "out0", f))

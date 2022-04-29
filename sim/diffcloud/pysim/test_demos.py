@@ -123,5 +123,5 @@ def test_band():
 if __name__ == '__main__':
     #test_band()
     #test_hang()
-    #test_fold()
-    test_lift()
+    test_fold()
+    #test_lift()

@@ -62,26 +62,15 @@ def filter_pointcloud(xyz):
     rz = 0
     clipper.set_Rotation(rx, ry, rz)
 
-    # lift
+    # crop to robot workspace bounds
     minx = 0.5
     minz = 0.075
-    miny = -0.35
+    miny = -0.15
     maxx = 0.95
     maxy = 0.35
     maxz = 0.35
     mins = 0
     maxs = 0
-
-    ## fold
-    #minx = 0.5
-    #minz = 0.085
-    #miny = -0.35
-    #maxx = 0.95
-    #maxy = 0.35
-    #maxz = 0.35
-    #mins = 0
-    #maxs = 0
-
 
     clipper.set_MinMax(minx, miny, minz, mins, maxx, maxy, maxz, maxs)
     p = clipper.filter()
